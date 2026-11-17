@@ -11,6 +11,14 @@
   h1{color:#7E3FC2;margin:16px 0 8px}
   a{color:#7E3FC2}
   footer{margin-top:40px;font-size:14px;color:#666}
+  h2{color:#7E3FC2;margin-top:36px}
+  #grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:16px;text-align:center}
+  .card{background:#fff;border-radius:18px;padding:10px;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+  .card img{width:100%;height:auto;border-radius:10px;border:0;box-shadow:none}
+  .card b{display:block;margin:6px 0 2px}
+  .card small{display:block;color:#777;direction:ltr}
+  .btns a{display:inline-block;margin:6px 3px 2px;padding:4px 12px;border-radius:999px;background:#7E3FC2;color:#fff;text-decoration:none;font-size:14px}
+  .btns a.v{background:#e33}
 </style>
 </head>
 <body>
@@ -19,7 +27,22 @@
   <h1>لنلوّن معاً يا أطفال</h1>
   <p>قناة يوتيوب تعليمية للأطفال باللغة العربية. مع آدم ولين، كل يوم نفتح الدفتر السحري ونعيد الألوان لحيوان جديد: قصص قصيرة، أسماء الألوان، العدّ، ومعلومات لطيفة عن الحيوانات.</p>
   <p>Lenlawen Maan is an Arabic educational coloring channel for children on YouTube. This site belongs to the channel and its upload tool.</p>
+  <h2>صفحات تلوين مجانية للطباعة</h2>
+  <p>Free printable coloring pages · Dibujos para colorear gratis · Desenhos para colorir · Coloriages gratuits</p>
+  <div id="grid"></div>
   <footer><a href="privacy.html">سياسة الخصوصية / Privacy Policy</a></footer>
 </main>
+<script>
+fetch('printables/list.json',{cache:'no-store'}).then(r=>r.json()).then(list=>{
+  const g=document.getElementById('grid');
+  for(const p of list){
+    const d=document.createElement('div');d.className='card';
+    d.innerHTML=`<a href="printables/${p.id}.pdf"><img loading="lazy" src="printables/${p.id}.jpg" alt=""></a>
+      <b></b><small></small><div class="btns"><a href="printables/${p.id}.pdf">PDF</a><a href="printables/${p.id}.png" download>PNG</a>${p.video?`<a class="v" href="${p.video}">▶ YouTube</a>`:''}</div>`;
+    d.querySelector('b').textContent=p.ar; d.querySelector('small').textContent=p.en||'';
+    g.appendChild(d);
+  }
+}).catch(()=>{});
+</script>
 </body>
 </html>
